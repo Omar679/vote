@@ -1,13 +1,25 @@
-import { Link, Stack } from "expo-router";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Link, Redirect, Stack } from "expo-router";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
+import { useAuth } from "@/Providers/AuthContext";
+
+const { user, session } = useAuth();
 
 export default function App() {
-  const [votes, setVotes] = useState([]);
-
+  const [votes, setVotes] = useState<any>([]);
+  if (!user) {
+    <Redirect href={"/(auth)/login"} />;
+  }
   useEffect(() => {
     fetchQuestions();
   }, []);
@@ -29,6 +41,11 @@ export default function App() {
               <SimpleLineIcons name="plus" size={20} color="black" />
             </Link>
           ),
+          headerLeft: () => (
+            <Link href={"/login"}>
+              <SimpleLineIcons name="user" size={20} color="black" />
+            </Link>
+          ),
         }}
       />
       <FlatList
@@ -42,6 +59,7 @@ export default function App() {
           </Link>
         )}
       />
+      <Button title="SignOut" onPress={() => console.log("Logged")} />
     </>
   );
 }

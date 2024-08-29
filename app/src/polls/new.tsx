@@ -51,7 +51,7 @@ export default function CreatePoll() {
               name="xmark"
               size={20}
               color="gray"
-              style={{ }}
+              style={{}}
             />
           </View>
         ))}
